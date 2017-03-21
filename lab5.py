@@ -27,7 +27,6 @@ def Quantization(X):
 df_train = pd.read_csv('Training-data.csv')
 df_test = pd.read_csv('Testing-data.csv')
 
-
 # разбиение выборки на признаки и ответы
 X_train, y_train = df_train.loc[:, 'X1':'X100'], df_train.loc[:, 'class':]
 X_test, y_test = df_test.loc[:, 'X1':'X100'], df_test.loc[:, 'class':]
@@ -36,19 +35,10 @@ X_test, y_test = df_test.loc[:, 'X1':'X100'], df_test.loc[:, 'class':]
 X_train_scale = Quantization(Scaling(X_train))
 X_test_scale = Quantization(Scaling(X_test))
 
+# соединение признаков и ответов, чтобы отсортировать выборку по классам (0/1)
 df_train = pd.concat([X_train_scale, y_train], axis=1).sort_values(by='class')
 
+# выделение подвыборок "холмы" и "впадины"
 X_train_cavity = df_train.loc[df_train['class'] == 0, 'X1':'X100']
 X_train_hill = df_train.loc[df_train['class'] == 1, 'X1':'X100']
 
-# X_hill_train, y_hill_train = df_train.loc[df_train['class'] == 1, 'X1':'X100'], df_train.loc[df_train['class'] == 1, 'class':]
-# print(X_cavity_train, y_cavity_train)
-
-#
-#
-# # разбиение тестовой выборки на признаки и ответы
-# X_cavity_test, y_cavity_test = df_test.loc[df_test['class'] == 0, 'X1':'X100'], df_test.loc[df_test['class'] == 0, 'class':]
-# X_hill_test, y_hill_test = df_test.loc[df_test['class'] == 1, 'X1':'X100'], df_test.loc[df_test['class'] == 1, 'class':]
-#
-
-    # , X_hill_train_scale= Quantization(Scaling(X_hill_train))
